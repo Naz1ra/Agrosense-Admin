@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - AgroSense Admin</title>
+    
+    <!-- 1. Load Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 2. Load Chart.js for the graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- 3. Load FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- 4. Load your custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 text-gray-800 h-screen overflow-hidden flex">
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="w-64 bg-gray-900 text-white flex-col h-full hidden md:flex">
+        <div class="h-16 flex items-center px-6 bg-gray-900 border-b border-gray-800">
+            <div class="w-6 h-6 bg-green-500 rounded flex items-center justify-center mr-2">
+                <span class="text-white font-bold text-xs"><i class="fa-solid fa-leaf"></i></span>
+            </div>
+            <span class="font-bold text-lg">AgroSense Admin</span>
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+            <a href="dashboard.html" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition text-left text-gray-300">
+                <i class="fa-solid fa-border-all w-6"></i> Dashboard
+            </a>
+            <a href="users.html" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition text-left text-gray-300">
+                <i class="fa-solid fa-users w-6"></i> User Management
+            </a>
+            <a href="settings.html" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition text-left text-gray-300">
+                <i class="fa-solid fa-gear w-6"></i> System Settings
+            </a>
+            <a href="reports.html" class="nav-active w-full flex items-center px-4 py-3 rounded-lg transition text-left">
+                <i class="fa-solid fa-chart-line w-6"></i> Reports & Analytics
+            </a>
+            <a href="ai.html" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition text-left text-gray-300">
+                <i class="fa-solid fa-brain w-6"></i> AI Insights
+            </a>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+        
+        <!-- HEADER -->
+        <header class="h-16 bg-white border-b flex items-center justify-between px-8 z-10">
+            <div class="flex items-center text-gray-600">
+                <i class="fa-solid fa-bars mr-4 cursor-pointer" onclick="toggleSidebar()"></i>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm text-gray-600">Admin: Mohd Saad</span>
+                <button onclick="showToast('No new notifications')" class="p-2 text-gray-600 hover:text-gray-900 border rounded-full">
+                    <i class="fa-solid fa-bell"></i>
+                </button>
+                <a href="login.html" class="flex items-center text-sm font-medium text-gray-700 hover:text-red-600">
+                    <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Logout
+                </a>
+            </div>
+        </header>
+
+        <!-- SCROLLABLE CONTENT -->
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="mb-6">
+                <h1 class="text-2xl font-bold text-gray-800">Reports & Analytics</h1>
+                <p class="text-sm text-gray-500">Generate and analyze system performance reports</p>
+            </div>
+
+            <!-- CHART 1: Water Usage -->
+            <div class="bg-white rounded-xl border p-6 mb-6">
+                <h3 class="font-semibold text-gray-800 mb-4">Water Usage Trend (Last 30 Days)</h3>
+                <!-- Canvas for Chart.js -->
+                <div class="h-64 w-full">
+                    <canvas id="waterChart"></canvas>
+                </div>
+            </div>
+
+            <!-- CHART 2: AI Accuracy -->
+            <div class="bg-white rounded-xl border p-6">
+                <h3 class="font-semibold text-gray-800 mb-4">AI Decision Accuracy Over Time</h3>
+                <!-- Canvas for Chart.js -->
+                <div class="h-64 w-full">
+                    <canvas id="accuracyChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- LOAD JAVASCRIPT (which contains the Chart.js logic) -->
+    <script src="script.js"></script>
+</body>
+</html>

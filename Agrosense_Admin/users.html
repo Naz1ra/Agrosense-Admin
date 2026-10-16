@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - AgroSense Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 text-gray-800 h-screen overflow-hidden flex">
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="w-64 bg-gray-900 text-white flex-col h-full hidden md:flex">
+        <div class="h-16 flex items-center px-6 bg-gray-900 border-b border-gray-800">
+            <div class="w-6 h-6 bg-green-500 rounded flex items-center justify-center mr-2"><span class="text-white font-bold text-xs"><i class="fa-solid fa-leaf"></i></span></div>
+            <span class="font-bold text-lg">AgroSense Admin</span>
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+            <a href="dashboard.html" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition text-left text-gray-300"><i class="fa-solid fa-border-all w-6"></i> Dashboard</a>
+            <a href="users.html" class="nav-active w-full flex items-center px-4 py-3 rounded-lg transition text-left"><i class="fa-solid fa-users w-6"></i> User Management</a>
+            <a href="settings.html" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition text-left text-gray-300"><i class="fa-solid fa-gear w-6"></i> System Settings</a>
+            <a href="reports.html" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition text-left text-gray-300"><i class="fa-solid fa-chart-line w-6"></i> Reports & Analytics</a>
+            <a href="ai.html" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition text-left text-gray-300"><i class="fa-solid fa-brain w-6"></i> AI Insights</a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+        <header class="h-16 bg-white border-b flex items-center justify-between px-8 z-10">
+            <div class="flex items-center text-gray-600"><i class="fa-solid fa-bars mr-4 cursor-pointer" onclick="toggleSidebar()"></i></div>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm text-gray-600">Admin: Mohd Saad</span>
+                <button onclick="showToast('No new notifications')" class="p-2 text-gray-600 hover:text-gray-900 border rounded-full"><i class="fa-solid fa-bell"></i></button>
+                <a href="login.html" class="flex items-center text-sm font-medium text-gray-700 hover:text-red-600"><i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Logout</a>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="flex justify-between items-end mb-6">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800">User Management</h1>
+                    <p class="text-sm text-gray-500">Manage farmer accounts and permissions</p>
+                </div>
+                <button onclick="openUserModal()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center">
+                    <i class="fa-solid fa-plus mr-2"></i> Add New Farmer
+                </button>
+            </div>
+
+            <div class="bg-white rounded-xl border overflow-hidden">
+                <div class="p-4 border-b flex justify-between items-center bg-gray-50">
+                    <div class="relative w-96">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400"></i>
+                        <input type="text" id="userSearch" oninput="filterUsers()" placeholder="Search by name, email, or location..." class="w-full pl-10 pr-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-green-500">
+                    </div>
+                    <div class="flex space-x-2">
+                        <select id="statusFilter" onchange="filterUsers()" class="border rounded-lg px-3 py-2 text-sm focus:outline-none">
+                            <option>All Status</option>
+                            <option>Active</option>
+                            <option>Inactive</option>
+                        </select>
+                        <button onclick="exportCSV()" class="border rounded-lg px-4 py-2 text-sm font-medium hover:bg-gray-50"><i class="fa-solid fa-download mr-2"></i> Export CSV</button>
+                    </div>
+                </div>
+
+                <table id="userTable" class="w-full text-left text-sm">
+                    <thead class="bg-gray-50 text-gray-500 text-xs uppercase">
+                        <tr>
+                            <th class="px-6 py-3 font-medium">Name</th>
+                            <th class="px-6 py-3 font-medium">Email</th>
+                            <th class="px-6 py-3 font-medium">Phone</th>
+                            <th class="px-6 py-3 font-medium">Location</th>
+                            <th class="px-6 py-3 font-medium">Registration Date</th>
+                            <th class="px-6 py-3 font-medium">Status</th>
+                            <th class="px-6 py-3 font-medium text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody" class="divide-y divide-gray-100">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">Ahmad Hassan</td>
+                            <td class="px-6 py-4">ahmad@farm.com</td>
+                            <td class="px-6 py-4">+60123456789</td>
+                            <td class="px-6 py-4">Kedah</td>
+                            <td class="px-6 py-4">2024-01-15</td>
+                            <td class="px-6 py-4"><span class="text-green-600 font-medium text-xs">Active</span></td>
+                            <td class="px-6 py-4 text-center space-x-3 text-gray-400">
+                                <i class="fa-solid fa-eye hover:text-blue-500 cursor-pointer" onclick="viewUser(this)"></i>
+                                <i class="fa-solid fa-pen hover:text-green-500 cursor-pointer" onclick="openEditModal(this)"></i>
+                                <i class="fa-solid fa-trash hover:text-red-500 cursor-pointer" onclick="deleteUserRow(this)"></i>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">Fatima Ali</td>
+                            <td class="px-6 py-4">fatima@farm.com</td>
+                            <td class="px-6 py-4">+60198765432</td>
+                            <td class="px-6 py-4">Perak</td>
+                            <td class="px-6 py-4">2024-02-20</td>
+                            <td class="px-6 py-4"><span class="text-green-600 font-medium text-xs">Active</span></td>
+                            <td class="px-6 py-4 text-center space-x-3 text-gray-400">
+                                <i class="fa-solid fa-eye hover:text-blue-500 cursor-pointer" onclick="viewUser(this)"></i>
+                                <i class="fa-solid fa-pen hover:text-green-500 cursor-pointer" onclick="openEditModal(this)"></i>
+                                <i class="fa-solid fa-trash hover:text-red-500 cursor-pointer" onclick="deleteUserRow(this)"></i>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">Sarah Ahmad</td>
+                            <td class="px-6 py-4">sarah@farm.com</td>
+                            <td class="px-6 py-4">+60176543210</td>
+                            <td class="px-6 py-4">Selangor</td>
+                            <td class="px-6 py-4">2024-03-25</td>
+                            <td class="px-6 py-4"><span class="text-gray-500 font-medium text-xs bg-gray-200 px-2 py-1 rounded">Inactive</span></td>
+                            <td class="px-6 py-4 text-center space-x-3 text-gray-400">
+                                <i class="fa-solid fa-eye hover:text-blue-500 cursor-pointer" onclick="viewUser(this)"></i>
+                                <i class="fa-solid fa-pen hover:text-green-500 cursor-pointer" onclick="openEditModal(this)"></i>
+                                <i class="fa-solid fa-trash hover:text-red-500 cursor-pointer" onclick="deleteUserRow(this)"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ADD USER MODAL -->
+        <div id="userModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+            <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-gray-800">Add New Farmer</h3>
+                    <button onclick="closeUserModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <form id="userForm" onsubmit="submitNewUser(event)">
+                    <div class="mb-3">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Full Name</label>
+                        <input type="text" id="newUserName" required class="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-green-500">
+                    </div>
+                    <div class="mb-3">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Email</label>
+                        <input type="email" id="newUserEmail" required class="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-green-500">
+                    </div>
+                    <div class="mb-3">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Phone</label>
+                        <input type="text" id="newUserPhone" required class="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-green-500">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Location</label>
+                        <input type="text" id="newUserLocation" required class="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-green-500">
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 rounded-md transition">Save Farmer</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- VIEW USER MODAL -->
+        <div id="viewModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+            <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-gray-800">Farmer Details</h3>
+                    <button onclick="closeViewModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="space-y-3 text-sm">
+                    <div class="flex justify-between border-b pb-2"><span class="text-gray-500">Full Name:</span> <span id="viewUserName" class="font-medium text-gray-800"></span></div>
+                    <div class="flex justify-between border-b pb-2"><span class="text-gray-500">Email:</span> <span id="viewUserEmail" class="font-medium text-gray-800"></span></div>
+                    <div class="flex justify-between border-b pb-2"><span class="text-gray-500">Phone:</span> <span id="viewUserPhone" class="font-medium text-gray-800"></span></div>
+                    <div class="flex justify-between border-b pb-2"><span class="text-gray-500">Location:</span> <span id="viewUserLocation" class="font-medium text-gray-800"></span></div>
+                    <div class="flex justify-between border-b pb-2"><span class="text-gray-500">Registration Date:</span> <span id="viewUserDate" class="font-medium text-gray-800"></span></div>
+                    <div class="flex justify-between"><span class="text-gray-500">Status:</span> <span id="viewUserStatus"></span></div>
+                </div>
+                <button onclick="closeViewModal()" class="mt-6 w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 rounded-md transition">Close</button>
+            </div>
+        </div>
+
+        <!-- EDIT USER MODAL -->
+        <div id="editModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+            <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-gray-800">Edit Farmer Details</h3>
+                    <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <form id="editForm" onsubmit="submitEditUser(event)">
+                    <div class="mb-3">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Full Name</label>
+                        <input type="text" id="editUserName" required class="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-green-500">
+                    </div>
+                    <div class="mb-3">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Email</label>
+                        <input type="email" id="editUserEmail" required class="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-green-500">
+                    </div>
+                    <div class="mb-3">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Phone</label>
+                        <input type="text" id="editUserPhone" required class="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-green-500">
+                    </div>
+                    <div class="mb-3">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Location</label>
+                        <input type="text" id="editUserLocation" required class="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-green-500">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Status</label>
+                        <select id="editUserStatus" class="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-green-500">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 rounded-md transition">Update Farmer</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
+

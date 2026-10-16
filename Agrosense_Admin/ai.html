@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Insights - AgroSense Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 text-gray-800 h-screen overflow-hidden flex">
+
+    <aside id="sidebar" class="w-64 bg-gray-900 text-white flex-col h-full hidden md:flex">
+        <div class="h-16 flex items-center px-6 bg-gray-900 border-b border-gray-800">
+            <div class="w-6 h-6 bg-green-500 rounded flex items-center justify-center mr-2"><span class="text-white font-bold text-xs">A</span></div>
+            <span class="font-bold text-lg">AgroSense Admin</span>
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+            <a href="dashboard.html" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition text-left text-gray-300"><i class="fa-solid fa-border-all w-6"></i> Dashboard</a>
+            <a href="users.html" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition text-left text-gray-300"><i class="fa-solid fa-users w-6"></i> User Management</a>
+            <a href="settings.html" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition text-left text-gray-300"><i class="fa-solid fa-gear w-6"></i> System Settings</a>
+            <a href="reports.html" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition text-left text-gray-300"><i class="fa-solid fa-chart-simple w-6"></i> Reports & Analytics</a>
+            <a href="ai.html" class="nav-active w-full flex items-center px-4 py-3 rounded-lg transition text-left"><i class="fa-solid fa-brain w-6"></i> AI Insights</a>
+        </nav>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+        <header class="h-16 bg-white border-b flex items-center justify-between px-8 z-10">
+            <div class="flex items-center text-gray-600"><i class="fa-solid fa-bars mr-4 cursor-pointer" onclick="toggleSidebar()"></i></div>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm text-gray-600">Admin: Mohd Saad</span>
+                <button onclick="showToast('No new notifications')" class="p-2 text-gray-600 hover:text-gray-900 border rounded-full"><i class="fa-solid fa-bell"></i></button>
+                <a href="login.html" class="flex items-center text-sm font-medium text-gray-700 hover:text-red-600"><i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Logout</a>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="mb-6">
+                <h1 class="text-2xl font-bold text-gray-800">AI Insights (Global)</h1>
+                <p class="text-sm text-gray-500">Monitor and analyze AI performance across all farms</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="bg-purple-600 p-5 rounded-xl text-white flex justify-between items-center shadow-md">
+                    <div><p class="text-purple-100 text-sm mb-1">Overall AI Confidence</p><p class="text-4xl font-bold mb-1">84%</p><p class="text-xs text-purple-200">Across all farms and devices</p></div>
+                    <div class="w-12 h-12 rounded-full bg-purple-500/50 flex items-center justify-center"><i class="fa-solid fa-brain text-xl"></i></div>
+                </div>
+                <div class="bg-white p-5 rounded-xl border flex justify-between items-center">
+                    <div><p class="text-gray-500 text-sm mb-1">Total Decisions Made</p><p class="text-4xl font-bold text-gray-800 mb-1">466</p><p class="text-xs text-gray-400">In the last 30 days</p></div>
+                    <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center"><i class="fa-solid fa-chart-pie"></i></div>
+                </div>
+                <div class="bg-white p-5 rounded-xl border flex justify-between items-center">
+                    <div><p class="text-gray-500 text-sm mb-1">Accuracy Rate</p><p class="text-4xl font-bold text-green-500 mb-1">90.8%</p><p class="text-xs text-gray-400">Based on farmer feedback</p></div>
+                    <div class="w-10 h-10 rounded-full bg-green-50 text-green-500 flex items-center justify-center"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl border p-6 mb-6">
+                <h3 class="font-semibold text-gray-800 mb-4">AI Confidence Breakdown by Farm</h3>
+                <div class="h-64 w-full"><canvas id="aiFarmChart"></canvas></div>
+            </div>
+
+            <div class="bg-white rounded-xl border p-6">
+                <h3 class="font-semibold text-gray-800 mb-4">AI Decision Analysis (Confusion Matrix)</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div onclick="showToast('Viewing 234 True Positives')" class="cursor-pointer hover:bg-green-100 transition bg-green-50 border border-green-100 rounded-lg p-4 flex justify-between items-center">
+                        <div><p class="text-green-700 font-medium flex items-center"><i class="fa-regular fa-circle-check mr-2"></i> True Positive</p><p class="text-xs text-green-600">Correctly recommended irrigation</p></div>
+                        <span class="text-3xl font-bold text-green-700">234</span>
+                    </div>
+                    <div onclick="showToast('Viewing 28 False Positives', 'error')" class="cursor-pointer hover:bg-red-100 transition bg-red-50 border border-red-100 rounded-lg p-4 flex justify-between items-center">
+                        <div><p class="text-red-700 font-medium flex items-center"><i class="fa-regular fa-circle-xmark mr-2"></i> False Positive</p><p class="text-xs text-red-600">Incorrectly recommended irrigation</p></div>
+                        <span class="text-3xl font-bold text-red-700">28</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
+

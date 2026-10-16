@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AgroSense Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 text-gray-800 h-screen overflow-hidden flex">
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="w-64 bg-gray-900 text-white flex-col h-full hidden md:flex">
+        <div class="h-16 flex items-center px-6 bg-gray-900 border-b border-gray-800">
+            <div class="w-6 h-6 bg-green-500 rounded flex items-center justify-center mr-2"><span class="text-white font-bold text-xs">A</span></div>
+            <span class="font-bold text-lg">AgroSense Admin</span>
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+            <a href="dashboard.html" class="nav-active w-full flex items-center px-4 py-3 rounded-lg transition text-left"><i class="fa-solid fa-border-all w-6"></i> Dashboard</a>
+            <a href="users.html" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition text-left text-gray-300"><i class="fa-solid fa-users w-6"></i> User Management</a>
+            <a href="settings.html" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition text-left text-gray-300"><i class="fa-solid fa-gear w-6"></i> System Settings</a>
+            <a href="reports.html" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition text-left text-gray-300"><i class="fa-solid fa-chart-simple w-6"></i> Reports & Analytics</a>
+            <a href="ai.html" class="w-full flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition text-left text-gray-300"><i class="fa-solid fa-brain w-6"></i> AI Insights</a>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+        <header class="h-16 bg-white border-b flex items-center justify-between px-8 z-10">
+            <div class="flex items-center text-gray-600"><i class="fa-solid fa-bars mr-4 cursor-pointer" onclick="toggleSidebar()"></i></div>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm text-gray-600">Admin: Mohd Saad</span>
+                <button onclick="showToast('No new notifications')" class="p-2 text-gray-600 hover:text-gray-900 border rounded-full"><i class="fa-solid fa-bell"></i></button>
+                <a href="login.html" class="flex items-center text-sm font-medium text-gray-700 hover:text-red-600"><i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Logout</a>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-8">
+            <div class="mb-6">
+                <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+                <p class="text-sm text-gray-500">Overview of system performance and activities</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white p-5 rounded-xl border flex justify-between items-center">
+                    <div><p class="text-sm text-gray-500 mb-1">Total Registered Farmers</p><p class="text-3xl font-bold text-gray-800">24</p></div>
+                    <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center"><i class="fa-solid fa-user-plus"></i></div>
+                </div>
+                <div class="bg-white p-5 rounded-xl border flex justify-between items-center">
+                    <div><p class="text-sm text-gray-500 mb-1">Active Devices</p><p class="text-3xl font-bold text-gray-800">32</p></div>
+                    <div class="w-10 h-10 rounded-lg bg-green-50 text-green-600 flex items-center justify-center"><i class="fa-solid fa-microchip"></i></div>
+                </div>
+                <div class="bg-white p-5 rounded-xl border flex justify-between items-center">
+                    <div><p class="text-sm text-gray-500 mb-1">Total Water Saved</p><p class="text-3xl font-bold text-gray-800">12,500 L</p></div>
+                    <div class="w-10 h-10 rounded-lg bg-cyan-50 text-cyan-600 flex items-center justify-center"><i class="fa-solid fa-droplet"></i></div>
+                </div>
+                <div class="bg-white p-5 rounded-xl border flex justify-between items-center">
+                    <div><p class="text-sm text-gray-500 mb-1">AI Confidence Average</p><p class="text-3xl font-bold text-gray-800">84%</p></div>
+                    <div class="w-10 h-10 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center"><i class="fa-solid fa-brain"></i></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl border p-6 lg:col-span-2">
+                    <h3 class="font-semibold text-gray-800 mb-4 flex items-center"><i class="fa-solid fa-arrow-trend-up text-green-500 mr-2"></i> Recent Activities</h3>
+                    <div class="space-y-4 text-sm">
+                        <div class="flex justify-between border-b pb-3"><div><p class="font-medium text-gray-800 text-green-600"><i class="fa-solid fa-circle text-[8px] mr-2"></i>Farmer registered</p><p class="text-xs text-gray-500 ml-4">Ahmad Hassan</p></div><span class="text-xs text-gray-400">2 hours ago</span></div>
+                        <div class="flex justify-between border-b pb-3"><div><p class="font-medium text-gray-800 text-green-600"><i class="fa-solid fa-circle text-[8px] mr-2"></i>Device added (Soil Moisture Sensor)</p><p class="text-xs text-gray-500 ml-4">Farm A</p></div><span class="text-xs text-gray-400">3 hours ago</span></div>
+                        <div class="flex justify-between border-b pb-3"><div><p class="font-medium text-gray-800 text-green-600"><i class="fa-solid fa-circle text-[8px] mr-2"></i>Threshold changed (35% → 40%)</p><p class="text-xs text-gray-500 ml-4">Mohd Ibrahim</p></div><span class="text-xs text-gray-400">5 hours ago</span></div>
+                        <div class="flex justify-between border-b pb-3"><div><p class="font-medium text-gray-800 text-green-600"><i class="fa-solid fa-circle text-[8px] mr-2"></i>Irrigation completed (15 min)</p><p class="text-xs text-gray-500 ml-4">Sarah Ahmad</p></div><span class="text-xs text-gray-400">6 hours ago</span></div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl border p-6">
+                    <h3 class="font-semibold text-gray-800 mb-4 flex items-center"><i class="fa-solid fa-triangle-exclamation text-orange-500 mr-2"></i> Alert Summary</h3>
+                    <div class="space-y-3">
+                        <div class="bg-yellow-50 border border-yellow-100 p-3 rounded-lg text-sm text-yellow-800">Low pH detected on 2 farms</div>
+                        <div class="bg-red-50 border border-red-100 p-3 rounded-lg text-sm text-red-800">1 device offline (Farm: Ahmad Hassan)</div>
+                        <div class="bg-blue-50 border border-blue-100 p-3 rounded-lg text-sm text-blue-800">AI model update available</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
