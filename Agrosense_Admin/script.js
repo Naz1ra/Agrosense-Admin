@@ -5,6 +5,25 @@ function login(event) {
     event.preventDefault(); 
     window.location.href = 'dashboard.html';
 }
+// --- Forgot Password Logic ---
+function openForgotModal(event) {
+    event.preventDefault(); // Prevents the page from jumping to the top
+    document.getElementById('forgotModal').classList.remove('hidden');
+}
+
+function closeForgotModal() {
+    document.getElementById('forgotModal').classList.add('hidden');
+    document.getElementById('resetEmail').value = ''; // Clear the input
+}
+
+function submitForgotPassword(event) {
+    event.preventDefault(); // Prevents page reload
+    const email = document.getElementById('resetEmail').value;
+    
+    // Simulate sending an email
+    closeForgotModal();
+    showToast(`Password reset link sent to ${email}`);
+}
 
 // --- Global Utility: Show Toast Notification ---
 function showToast(message, type = 'success') {
