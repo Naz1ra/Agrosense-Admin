@@ -7,12 +7,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    
-    <!-- I removed the auto-fill script here -->
 </head>
-<body class="bg-[#e6f4ea] h-screen flex items-center justify-center">
+<body class="bg-[#e6f4ea] h-screen flex items-center justify-center relative overflow-hidden">
 
-    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-sm text-center">
+    <!-- LOGIN CARD -->
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-sm text-center z-10">
         <div class="w-12 h-12 bg-green-500 rounded-lg mx-auto flex items-center justify-center mb-4">
             <span class="text-white text-xl font-bold">A</span>
         </div>
@@ -22,24 +21,46 @@
         <form onsubmit="login(event)">
             <div class="text-left mb-4">
                 <label class="block text-xs font-medium text-gray-600 mb-1">Email Address</label>
-                <!-- Using a placeholder so it looks nice, but the box is empty -->
                 <input type="email" placeholder="admin123@gmail.com" class="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-green-500" required>
             </div>
             <div class="text-left mb-2">
                 <label class="block text-xs font-medium text-gray-600 mb-1">Password</label>
-                <!-- Using a placeholder for password -->
                 <input type="password" placeholder="Enter password" class="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-green-500" required>
             </div>
             
             <div class="text-left mb-6">
-                <a href="#" class="text-xs text-green-600 hover:underline">Forgot password?</a>
+                <!-- Changed this link to open the modal -->
+                <a href="#" onclick="openForgotModal(event)" class="text-xs text-green-600 hover:underline">Forgot password?</a>
             </div>
             
             <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 rounded-md transition">Login</button>
         </form>
         
-        <!-- I changed the text at the bottom to reflect that it's blank -->
         <p class="text-[10px] text-gray-400 mt-6">Please enter your credentials.</p>
+    </div>
+
+    <!-- FORGOT PASSWORD MODAL (Hidden by default) -->
+    <div id="forgotModal" class="hidden absolute inset-0 bg-black/50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-xl shadow-lg w-full max-w-sm p-6 text-left relative">
+            <button onclick="closeForgotModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mb-4">
+                <i class="fa-solid fa-key"></i>
+            </div>
+            
+            <h3 class="text-lg font-bold text-gray-800 mb-1">Reset Password</h3>
+            <p class="text-xs text-gray-500 mb-4">Enter your email address and we'll send you a link to reset your password.</p>
+            
+            <form onsubmit="submitForgotPassword(event)">
+                <div class="mb-4">
+                    <label class="block text-xs font-medium text-gray-600 mb-1">Email Address</label>
+                    <input type="email" id="resetEmail" required class="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-md transition">Send Reset Link</button>
+            </form>
+        </div>
     </div>
 
     <script src="script.js"></script>
