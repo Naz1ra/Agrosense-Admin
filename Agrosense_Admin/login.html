@@ -7,6 +7,23 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Added a small script to auto-fill the fields invisibly -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Fill the email
+            const emailInput = document.getElementById('emailInput');
+            emailInput.value = "admin123@gmail.com";
+            
+            // Fill the password
+            const passInput = document.getElementById('passInput');
+            passInput.value = "password123";
+            
+            // Blur them so the text isn't highlighted on load
+            emailInput.blur();
+            passInput.blur();
+        });
+    </script>
 </head>
 <body class="bg-[#e6f4ea] h-screen flex items-center justify-center">
 
@@ -20,17 +37,13 @@
         <form onsubmit="login(event)">
             <div class="text-left mb-4">
                 <label class="block text-xs font-medium text-gray-600 mb-1">Email Address</label>
-                <input type="email" id="emailInput" value="admin@agrosense.com"
-                       data-real-value="admin@agrosense.com"
-                       placeholder="Enter your email"
-                       class="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-green-500" required>
+                <!-- Added ID for JavaScript, and text color matches placeholder so it looks empty -->
+                <input type="email" id="emailInput" class="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-green-500" required>
             </div>
             <div class="text-left mb-2">
                 <label class="block text-xs font-medium text-gray-600 mb-1">Password</label>
-                <input type="password" id="passwordInput" value="password123"
-                       data-real-value="password123"
-                       placeholder="Enter your password"
-                       class="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-green-500" required>
+                <!-- Added ID for JavaScript -->
+                <input type="password" id="passInput" class="w-full px-3 py-2 border rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-green-500" required>
             </div>
             
             <div class="text-left mb-6">
@@ -40,35 +53,8 @@
             <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 rounded-md transition">Login</button>
         </form>
         
-        <p class="text-[10px] text-gray-400 mt-6">Please enter your credentials to continue.</p>
+        <p class="text-[10px] text-gray-400 mt-6">Demo credentials are pre-filled.</p>
     </div>
-
-    <script>
-        // On page load: keep the real values in data-real-value, but blank the visible field
-        document.addEventListener("DOMContentLoaded", () => {
-            const email = document.getElementById("emailInput");
-            const password = document.getElementById("passwordInput");
-
-            email.value = "";
-            password.value = "";
-        });
-
-        // Before submit: restore the real values so login() receives the correct credentials
-        function login(event) {
-            const email = document.getElementById("emailInput");
-            const password = document.getElementById("passwordInput");
-
-            // If the user didn't type anything, use the stored real value
-            if (!email.value) email.value = email.dataset.realValue;
-            if (!password.value) password.value = password.dataset.realValue;
-
-            event.preventDefault();
-            console.log("Logging in with:", email.value, password.value);
-
-            // Call your existing logic — e.g. window.login? No — this IS login.
-            // If your script.js defines a different function, call it here instead.
-        }
-    </script>
 
     <script src="script.js"></script>
 </body>
