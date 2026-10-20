@@ -1,29 +1,51 @@
 /* script.js */
 
+/* script.js */
+
 // --- Authentication Logic ---
 function login(event) {
     event.preventDefault(); 
-    window.location.href = 'dashboard.html';
+    
+    // 1. Get what the user typed
+    const enteredEmail = document.getElementById('loginEmail').value;
+    const enteredPassword = document.getElementById('loginPassword').value;
+
+    // 2. Set the correct credentials here
+    const CORRECT_EMAIL = "admin123@gmail.com";
+    const CORRECT_PASSWORD = "password123";
+
+    // 3. Check if they match
+    if (enteredEmail === CORRECT_EMAIL && enteredPassword === CORRECT_PASSWORD) {
+        // Success! Redirect to dashboard
+        window.location.href = 'dashboard.html';
+    } else {
+        // Error! Show the red popup notification
+        showToast('Incorrect email or password. Please try again.', 'error');
+        
+        // Optional: Clear the password field for security
+        document.getElementById('loginPassword').value = '';
+    }
 }
+
 // --- Forgot Password Logic ---
 function openForgotModal(event) {
-    event.preventDefault(); // Prevents the page from jumping to the top
+    event.preventDefault(); 
     document.getElementById('forgotModal').classList.remove('hidden');
 }
 
 function closeForgotModal() {
     document.getElementById('forgotModal').classList.add('hidden');
-    document.getElementById('resetEmail').value = ''; // Clear the input
+    document.getElementById('resetEmail').value = ''; 
 }
 
 function submitForgotPassword(event) {
-    event.preventDefault(); // Prevents page reload
+    event.preventDefault(); 
     const email = document.getElementById('resetEmail').value;
-    
-    // Simulate sending an email
     closeForgotModal();
     showToast(`Password reset link sent to ${email}`);
 }
+
+// ... (Keep the rest of your script.js the same below this) ...
 
 // --- Global Utility: Show Toast Notification ---
 function showToast(message, type = 'success') {
